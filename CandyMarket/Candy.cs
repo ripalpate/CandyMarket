@@ -4,7 +4,8 @@ using System.Text;
 
 namespace CandyMarket
 {
-    class Candy
+    internal class Candy
     {
+        public string Name { get; set; }
     }
 }
