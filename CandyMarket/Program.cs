@@ -67,8 +67,8 @@ namespace CandyMarket
         {
             
 
-            var savedCandy = db.SaveNewCandy(newCandy);
-            Console.WriteLine($"Now you own the candy {savedCandy.Name}");
+            //var savedCandy = db.SaveNewCandy(newCandy);
+           // Console.WriteLine($"Now you own the candy {savedCandy.Name}");
         }
 
         private static void EatCandy(CandyStorage db)
@@ -77,4 +77,4 @@ namespace CandyMarket
         }
     }
     }
-}
+
