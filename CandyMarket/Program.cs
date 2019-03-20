@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CandyMarket
 {
@@ -18,7 +19,22 @@ namespace CandyMarket
             var myCandy = new Candy("candyYum", "sweetums", FlavorType.HardCandy, DateTime.Now , 1234);
             var myCandy2 = new Candy("sweets", "mars", FlavorType.Sour, DateTime.Now, 1235);
             var myCandy3 = new Candy("coolCandy", "pedigree", FlavorType.Stretchy, DateTime.Now, 1236);
+
+            var MainOwner = new Owner("Owner1", new List<Candy> {myCandy});
+            var Bob = new Owner("Owner2", new List<Candy> {myCandy2});
+            var Daphne = new Owner("Owner3", new List<Candy> {myCandy3});
+
+            foreach (var candy in MainOwner.CandyList)
+            {
+                Console.WriteLine($"{ MainOwner.OwnerId} has {candy.Name} " +
+                    $"that has flavor of {candy.Flavor} that was Manufactured " +
+                    $"at {candy.Manufacture} and received on {candy.RecievedDate}");
+            }
+
+            Console.ReadLine();
+
         }
+
 
         internal static CandyStorage SetupNewApp()
         {
@@ -60,6 +76,7 @@ namespace CandyMarket
                     break;
                 default: return true;
             }
+            Console.ReadLine();
             return true;
         }
 
