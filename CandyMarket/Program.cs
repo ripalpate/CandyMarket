@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CandyMarket
 {
@@ -14,7 +15,12 @@ namespace CandyMarket
                 var userInput = MainMenu();
                 exit = TakeActions(db, userInput);
             }
+
+            var MainOwner = new Owner("Owner1", new List<Candy>());
+            var Bob = new Owner("Owner2", new List<Candy>());
+            var Daphne = new Owner("Owner3", new List<Candy>());
         }
+
 
         internal static CandyStorage SetupNewApp()
         {
@@ -76,4 +82,3 @@ namespace CandyMarket
         }
     }
     }
-}
