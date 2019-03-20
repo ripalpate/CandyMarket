@@ -16,9 +16,23 @@ namespace CandyMarket
                 exit = TakeActions(db, userInput);
             }
 
-            var MainOwner = new Owner("Owner1", new List<Candy>());
-            var Bob = new Owner("Owner2", new List<Candy>());
-            var Daphne = new Owner("Owner3", new List<Candy>());
+            var myCandy = new Candy("candyYum", "sweetums", FlavorType.HardCandy, DateTime.Now , 1234);
+            var myCandy2 = new Candy("sweets", "mars", FlavorType.Sour, DateTime.Now, 1235);
+            var myCandy3 = new Candy("coolCandy", "pedigree", FlavorType.Stretchy, DateTime.Now, 1236);
+
+            var MainOwner = new Owner("Owner1", new List<Candy> {myCandy});
+            var Bob = new Owner("Owner2", new List<Candy> {myCandy2});
+            var Daphne = new Owner("Owner3", new List<Candy> {myCandy3});
+
+            foreach (var candy in MainOwner.CandyList)
+            {
+                Console.WriteLine($"{ MainOwner.OwnerId} has {candy.Name} " +
+                    $"that has flavor of {candy.Flavor} that was Manufactured " +
+                    $"at {candy.Manufacture} and received on {candy.RecievedDate}");
+            }
+
+            Console.ReadLine();
+
         }
 
 
@@ -62,18 +76,16 @@ namespace CandyMarket
                     break;
                 default: return true;
             }
+            Console.ReadLine();
             return true;
         }
 
         internal static void AddNewCandy(CandyStorage db)
         {
-            var newCandy = new Candy
-            {
-                Name = "Whatchamacallit"
-            };
+            
 
-            var savedCandy = db.SaveNewCandy(newCandy);
-            Console.WriteLine($"Now you own the candy {savedCandy.Name}");
+            //var savedCandy = db.SaveNewCandy(newCandy);
+           // Console.WriteLine($"Now you own the candy {savedCandy.Name}");
         }
 
         private static void EatCandy(CandyStorage db)
@@ -82,3 +94,4 @@ namespace CandyMarket
         }
     }
     }
+
