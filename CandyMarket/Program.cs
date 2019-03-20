@@ -14,6 +14,10 @@ namespace CandyMarket
                 var userInput = MainMenu();
                 exit = TakeActions(db, userInput);
             }
+
+            var myCandy = new Candy("candyYum", "sweetums", FlavorType.HardCandy, DateTime.Now , 1234);
+            var myCandy2 = new Candy("sweets", "mars", FlavorType.Sour, DateTime.Now, 1235);
+            var myCandy3 = new Candy("coolCandy", "pedigree", FlavorType.Stretchy, DateTime.Now, 1236);
         }
 
         internal static CandyStorage SetupNewApp()
@@ -61,13 +65,10 @@ namespace CandyMarket
 
         internal static void AddNewCandy(CandyStorage db)
         {
-            var newCandy = new Candy
-            {
-                Name = "Whatchamacallit"
-            };
+            
 
-            var savedCandy = db.SaveNewCandy(newCandy);
-            Console.WriteLine($"Now you own the candy {savedCandy.Name}");
+            //var savedCandy = db.SaveNewCandy(newCandy);
+           // Console.WriteLine($"Now you own the candy {savedCandy.Name}");
         }
 
         private static void EatCandy(CandyStorage db)
@@ -76,4 +77,4 @@ namespace CandyMarket
         }
     }
     }
-}
+
