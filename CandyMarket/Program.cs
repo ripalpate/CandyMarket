@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CandyMarket
 {
@@ -31,7 +32,7 @@ namespace CandyMarket
                     $"at {candy.Manufacture} and received on {candy.RecievedDate}");
             }
 
-            Console.ReadLine();
+          //  Console.ReadLine();
 
         }
 
@@ -90,7 +91,46 @@ namespace CandyMarket
 
         private static void EatCandy(CandyStorage db)
         {
-            throw new NotImplementedException();
+            var EatenCandies = new List<Candy>();
+            var candies = new List<Candy>();
+            candies.Add(new Candy("snickers", "Hersheys", FlavorType.Chocolate, DateTime.Now, 1));
+            candies.Add(new Candy("watchmacallit", "Hersheys", FlavorType.Chocolate, DateTime.Now, 2));
+            candies.Add(new Candy("skittles", "Wrigley", FlavorType.Sour, DateTime.Now, 3));
+            candies.Add(new Candy("snickers", "Hersheys", FlavorType.Chocolate, DateTime.Now, 4));
+
+            var listOfCandies = "";
+            foreach (var candy in candies)
+            {
+                listOfCandies += $"{candy.Name}" + ",";
+            }
+            Console.WriteLine($"Please Select Which Candy You want to Eat :{listOfCandies.TrimEnd(',')}");
+            var UserSelection = Console.ReadLine().ToLower();
+
+            var FiltercandyByName = candies.Where(candy => candy.Name == UserSelection).ToList();
+            FiltercandyByName.Sort((x,y)=>(x.CandyId.CompareTo(y.CandyId)));
+            var OldCandy = FiltercandyByName.First();
+            Console.WriteLine($"You can eat {OldCandy.Name} with id {OldCandy.CandyId}");
+            
+            candies.Remove(OldCandy);
+            EatenCandies.Add(OldCandy);
+            var listOfReamainingCandies = " ";
+            foreach (var candy in candies)
+            {
+                listOfReamainingCandies += $"{candy.Name}" + ",";
+            }
+            Console.WriteLine($"newList of Candies after Eat: {listOfReamainingCandies}");
+            var listOfEatenCandies = " ";
+            foreach (var candy in EatenCandies)
+            {
+                listOfEatenCandies += $"{candy.Name}" + ",";
+            }
+            Console.WriteLine($"Eaten Candies: {listOfEatenCandies.TrimEnd(',')}");
+            //foreach (var filterCandy in EatenCandies)
+            //{
+            //    Console.WriteLine($"{filterCandy.Name} with {filterCandy.CandyId}");
+            //}
+            // throw new NotImplementedException();
+           
         }
     }
     }
