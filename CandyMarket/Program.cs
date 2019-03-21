@@ -9,20 +9,25 @@ namespace CandyMarket
         {
             var db = SetupNewApp();
 
+            var myCandy = new Candy("candyYum", "sweetums", FlavorType.HardCandy, DateTime.Now, 1234);
+            var myCandy2 = new Candy("sweets", "mars", FlavorType.Sour, DateTime.Now, 1235);
+            var myCandy3 = new Candy("coolCandy", "pedigree", FlavorType.Stretchy, DateTime.Now, 1236);
+
+            var MainOwner = new Owner("Owner1", new List<Candy> { myCandy });
+            var Bob = new Owner("Owner2", new List<Candy> { myCandy2 });
+            var Daphne = new Owner("Owner3", new List<Candy> { myCandy3 });
+            var myTrade = new Trade("Trade1", 1234, 1235, "Owner2");
+
             var exit = false;
             while (!exit)
             {
                 var userInput = MainMenu();
-                exit = TakeActions(db, userInput);
+                exit = TakeActions(db, userInput, MainOwner);
             }
 
-            var myCandy = new Candy("candyYum", "sweetums", FlavorType.HardCandy, DateTime.Now , 1234);
-            var myCandy2 = new Candy("sweets", "mars", FlavorType.Sour, DateTime.Now, 1235);
-            var myCandy3 = new Candy("coolCandy", "pedigree", FlavorType.Stretchy, DateTime.Now, 1236);
-
-            var MainOwner = new Owner("Owner1", new List<Candy> {myCandy});
-            var Bob = new Owner("Owner2", new List<Candy> {myCandy2});
-            var Daphne = new Owner("Owner3", new List<Candy> {myCandy3});
+            Console.WriteLine($"{myTrade.TradeId} gives {myTrade.MainOwnerId} " +
+                $"{myTrade.ReceivingCandyId} and gives {myTrade.OtherOwnerId} " +
+                $"{myTrade.TradingCandyId}");
 
             foreach (var candy in MainOwner.CandyList)
             {
@@ -58,7 +63,7 @@ namespace CandyMarket
             return userOption;
         }
 
-        private static bool TakeActions(CandyStorage db, ConsoleKeyInfo userInput)
+        private static bool TakeActions(CandyStorage db, ConsoleKeyInfo userInput, Owner MainOwner)
         {
             Console.Write(Environment.NewLine);
 
@@ -72,7 +77,7 @@ namespace CandyMarket
                     AddNewCandy(db);
                     break;
                 case "2":
-                    EatCandy(db);
+                    EatCandy(MainOwner.CandyList);
                     break;
                 default: return true;
             }
@@ -88,7 +93,7 @@ namespace CandyMarket
            // Console.WriteLine($"Now you own the candy {savedCandy.Name}");
         }
 
-        private static void EatCandy(CandyStorage db)
+        private static void EatCandy(List<Candy> candies)
         {
             throw new NotImplementedException();
         }
