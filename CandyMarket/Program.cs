@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CandyMarket
 {
@@ -58,6 +59,7 @@ namespace CandyMarket
             View mainMenu = new View()
                     .AddMenuOption("Did you just get some new candy? Add it here.")
                     .AddMenuOption("Do you want to eat some candy? Take it here.")
+                    .AddMenuOption("Do you want to trade candy? Trade here.")    
                     .AddMenuText("Press Esc to exit.");
             Console.Write(mainMenu.GetFullMenu());
             var userOption = Console.ReadKey();
@@ -80,7 +82,7 @@ namespace CandyMarket
                 case "2":
                     EatCandy(mainOwner.CandyList);
                     break;
-                case "3":
+                case "4":
                     Console.WriteLine("Who do you want to Trade with?");
                     var tradingOwnerName = Console.ReadLine();
                     var tradingOwner = new Owner("default", new List<Candy>());
@@ -118,12 +120,42 @@ namespace CandyMarket
 
         private static void StartTrade(Owner mainOwner, Owner tradingOwner)
         {
-            Console.WriteLine("What candy do you want to receive?");
-            var receivingCandyName = Console.ReadLine();
+            var tradingOwnerCandyList = "";
+            foreach (var candy in tradingOwner.CandyList)
+            {
+                tradingOwnerCandyList += $"{candy.Name},";
+            }
+            Console.WriteLine($"What candy do you want to receive? {tradingOwnerCandyList.TrimEnd(',')}");
+            var receivingCandyInput = Console.ReadLine();
+            var filterCandy = tradingOwner.CandyList.Where(candy => candy.Name == receivingCandyInput).ToList();
+            var receivingCandy = filterCandy.First();
+            var mainOwnerCandyList = "";
+            foreach (var candy in mainOwner.CandyList)
+            {
+                mainOwnerCandyList += $"{candy.Name},";
+            }
+            Console.WriteLine($"What candy do you want to trade? {mainOwnerCandyList.TrimEnd(',')}");
+            var tradingCandyInput = Console.ReadLine();
+            var filterCandies = mainOwner.CandyList.Where(candy => candy.Name == tradingCandyInput).ToList();
+            var tradingCandy = filterCandies.First();
+            mainOwner.CandyList.Remove(tradingCandy);
+            mainOwner.CandyList.Add(receivingCandy);
+            tradingOwner.CandyList.Remove(receivingCandy);
+            tradingOwner.CandyList.Add(tradingCandy);
+            var newTradingOwnerCandyList = "";
+            var newMainOwnerCandyList = "";
+            foreach (var candy in tradingOwner.CandyList)
+            {
+                newTradingOwnerCandyList += $"{candy.Name},";
+            }
+            foreach (var candy in mainOwner.CandyList)
+            {
+                newMainOwnerCandyList += $"{candy.Name},";
+            }
+            Console.WriteLine($"You have traded {tradingCandy.Name} for {receivingCandy.Name}");
+            Console.WriteLine($"You now have these candies: {newMainOwnerCandyList.TrimEnd(',')}");
+            Console.WriteLine($"{tradingOwner.OwnerId} now has these candies: {newTradingOwnerCandyList.TrimEnd(',')}");
 
-
-            Console.WriteLine("What candy do you want to trade?");
-            var tradingCandyName = Console.ReadLine();
         }
     }
     }
