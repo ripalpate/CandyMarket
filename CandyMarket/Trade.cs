@@ -7,18 +7,19 @@ namespace CandyMarket
     class Trade
     {
         public string TradeId { get; set; }
-        public string MainOwnerId { get; set; }
-        public string OtherOwnerId { get; set; }
-        public int TradingCandyId { get; set; }
-        public int ReceivingCandyId { get; set; }
+        public Owner MainOwner { get; set; }
+        public Owner OtherOwner { get; set; }
+        public Candy TradingCandy { get; set; }
+        public Candy ReceivingCandy { get; set; }
 
-        public Trade(string tradeId, int tradingCandyId, int receivingCandyId, string otherOwnerId, string mainOwnerId = "Owner1")
+        public Trade(string tradeId, Candy tradingCandy, Candy receivingCandy, Owner otherOwner, Owner mainOwner)
         {
             TradeId = tradeId;
-            MainOwnerId = mainOwnerId;
-            OtherOwnerId = otherOwnerId;
-            TradingCandyId = tradingCandyId;
-            ReceivingCandyId = receivingCandyId;
+            MainOwner = mainOwner;
+            OtherOwner = otherOwner;
+            TradingCandy = tradingCandy;
+            ReceivingCandy = receivingCandy;
         }
+
     }
 }
