@@ -99,10 +99,10 @@ namespace CandyMarket
             {
                 var EatenCandies = new List<Candy>();
                 var candies = new List<Candy>();
-                candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, DateTime.Now, 1));
+                candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, new DateTime(2016, 08, 01, 18, 50, 23, 230), 1));
                 candies.Add(new Candy("watchmacallit", "Hersheys", FlavorType.chocolate, DateTime.Now, 2));
                 candies.Add(new Candy("skittles", "Wrigley", FlavorType.sour, DateTime.Now, 3));
-                candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, DateTime.Now, 4));
+                candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, new DateTime(2017, 08, 01, 06, 20, 23, 230), 4));
 
                 var listOfCandies = "";
                 foreach (var candy in candies)
@@ -113,9 +113,9 @@ namespace CandyMarket
                 var UserSelection = Console.ReadLine().ToLower();
 
                 var FiltercandyByName = candies.Where(candy => candy.Name == UserSelection).ToList();
-                FiltercandyByName.Sort((x, y) => (x.CandyId.CompareTo(y.CandyId)));
+                FiltercandyByName.Sort((x, y) => (x.RecievedDate.CompareTo(y.RecievedDate)));
                 var OldCandy = FiltercandyByName.First();
-                Console.WriteLine($"You can eat {OldCandy.Name} with id {OldCandy.CandyId}");
+                Console.WriteLine($"You can eat {OldCandy.Name} which is received on {OldCandy.RecievedDate}");
 
                 candies.Remove(OldCandy);
                 EatenCandies.Add(OldCandy);
@@ -125,7 +125,7 @@ namespace CandyMarket
                 {
                     listOfEatenCandies += $"{candy.Name}" + ",";
                 }
-                Console.WriteLine($"Candy that I can eat: {listOfEatenCandies.TrimEnd(',')} ");
+                Console.WriteLine($"Candy that I ate: {listOfEatenCandies.TrimEnd(',')} ");
                 foreach (var candy in candies)
                 {
                     listOfReamainingCandies += $"{candy.Name}" + ",";
@@ -145,12 +145,12 @@ namespace CandyMarket
             {
                 var EatenRandomizeCandies = new List<Candy>();
                 var candies = new List<Candy>();
-                candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, DateTime.Now, 1));
+                candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, new DateTime(2018, 08, 01, 18, 50, 23, 230), 1));
                 candies.Add(new Candy("watchmacallit", "Hersheys", FlavorType.chocolate, DateTime.Now, 2));
                 candies.Add(new Candy("skittles", "Wrigley", FlavorType.sour, DateTime.Now, 3));
-                candies.Add(new Candy("kisses", "Hersheys", FlavorType.chocolate, DateTime.Now, 4));
-                candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, DateTime.Now, 5));
-                candies.Add(new Candy("sour punch", "American Licorice", FlavorType.sour, DateTime.Now, 6));
+                candies.Add(new Candy("kisses", "Hersheys", FlavorType.chocolate, new DateTime(2018, 09, 15, 12, 00, 23, 430), 4));
+                candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, new DateTime(2018, 10, 20, 11, 50, 20, 530), 5));
+                candies.Add(new Candy("sour punch", "American Licorice", FlavorType.sour, new DateTime(2019, 01, 05, 13, 25, 23, 330), 6));
                 var listOfCandies = "";
                 foreach (var candy in candies)
                 {
@@ -164,7 +164,7 @@ namespace CandyMarket
                 int randFlavor = random.Next(FilterCandyByFlavor.Count);
                 var randSelectedCandy = FilterCandyByFlavor[randFlavor].Name;
                 var checkSameCandies = FilterCandyByFlavor.Where(candy => candy.Name == randSelectedCandy).First();
-                Console.WriteLine($"Here is the random candy {checkSameCandies.Name} with {checkSameCandies.CandyId} id");
+                Console.WriteLine($"Here is the random candy {checkSameCandies.Name} which is received on {checkSameCandies.RecievedDate}");
                 candies.Remove(checkSameCandies);
                 EatenRandomizeCandies.Add(checkSameCandies);
                 var listOfReamainingCandies = " ";
