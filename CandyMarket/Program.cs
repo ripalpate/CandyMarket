@@ -17,13 +17,13 @@ namespace CandyMarket
                 exit = TakeActions(db, userInput);
             }
 
-            var myCandy = new Candy("candyYum", "sweetums", FlavorType.HardCandy, DateTime.Now , 1234);
-            var myCandy2 = new Candy("sweets", "mars", FlavorType.Sour, DateTime.Now, 1235);
-            var myCandy3 = new Candy("coolCandy", "pedigree", FlavorType.Stretchy, DateTime.Now, 1236);
+            var myCandy = new Candy("candyYum", "sweetums", FlavorType.hardCandy, DateTime.Now, 1234);
+            var myCandy2 = new Candy("sweets", "mars", FlavorType.sour, DateTime.Now, 1235);
+            var myCandy3 = new Candy("coolCandy", "pedigree", FlavorType.stretchy, DateTime.Now, 1236);
 
-            var MainOwner = new Owner("Owner1", new List<Candy> {myCandy});
-            var Bob = new Owner("Owner2", new List<Candy> {myCandy2});
-            var Daphne = new Owner("Owner3", new List<Candy> {myCandy3});
+            var MainOwner = new Owner("Owner1", new List<Candy> { myCandy });
+            var Bob = new Owner("Owner2", new List<Candy> { myCandy2 });
+            var Daphne = new Owner("Owner3", new List<Candy> { myCandy3 });
 
             foreach (var candy in MainOwner.CandyList)
             {
@@ -32,7 +32,7 @@ namespace CandyMarket
                     $"at {candy.Manufacture} and received on {candy.RecievedDate}");
             }
 
-          //  Console.ReadLine();
+            //  Console.ReadLine();
 
         }
 
@@ -87,10 +87,10 @@ namespace CandyMarket
 
         internal static void AddNewCandy(CandyStorage db)
         {
-            
+
 
             //var savedCandy = db.SaveNewCandy(newCandy);
-           // Console.WriteLine($"Now you own the candy {savedCandy.Name}");
+            // Console.WriteLine($"Now you own the candy {savedCandy.Name}");
         }
 
         private static void EatCandy(CandyStorage db)
@@ -99,10 +99,10 @@ namespace CandyMarket
             {
                 var EatenCandies = new List<Candy>();
                 var candies = new List<Candy>();
-                candies.Add(new Candy("snickers", "Hersheys", FlavorType.Chocolate, DateTime.Now, 1));
-                candies.Add(new Candy("watchmacallit", "Hersheys", FlavorType.Chocolate, DateTime.Now, 2));
-                candies.Add(new Candy("skittles", "Wrigley", FlavorType.Sour, DateTime.Now, 3));
-                candies.Add(new Candy("snickers", "Hersheys", FlavorType.Chocolate, DateTime.Now, 4));
+                candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, DateTime.Now, 1));
+                candies.Add(new Candy("watchmacallit", "Hersheys", FlavorType.chocolate, DateTime.Now, 2));
+                candies.Add(new Candy("skittles", "Wrigley", FlavorType.sour, DateTime.Now, 3));
+                candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, DateTime.Now, 4));
 
                 var listOfCandies = "";
                 foreach (var candy in candies)
@@ -130,52 +130,62 @@ namespace CandyMarket
                 {
                     listOfReamainingCandies += $"{candy.Name}" + ",";
                 }
-                Console.WriteLine($"Remaining list of candies after I ate: {listOfReamainingCandies}");
+                Console.WriteLine($"Remaining list of candies after I ate: {listOfReamainingCandies.TrimEnd(',')}");
             }
-            catch (NotImplementedException ex)
+            catch (NotImplementedException e)
             {
-                Console.Write(ex);
+                Console.WriteLine(e);
+                throw;
             }
-           
+
         }
 
         public static void EatRandomizeCandy(CandyStorage db) {
-            var EatenRandomizeCandies = new List<Candy>();
-            var candies = new List<Candy>();
-            candies.Add(new Candy("snickers", "Hersheys", FlavorType.Chocolate, DateTime.Now, 1));
-            candies.Add(new Candy("watchmacallit", "Hersheys", FlavorType.Chocolate, DateTime.Now, 2));
-            candies.Add(new Candy("skittles", "Wrigley", FlavorType.Sour, DateTime.Now, 3));
-            candies.Add(new Candy("kisses", "Hersheys", FlavorType.Chocolate, DateTime.Now, 4));
-            candies.Add(new Candy("snickers", "Hersheys", FlavorType.Chocolate, DateTime.Now, 5));
-            var listOfCandies = "";
-            foreach (var candy in candies)
+            try
             {
-                listOfCandies += $"{candy.Flavor}" + ",";
-            }
-            Console.WriteLine($"Please select flavor of Candy that you want to eat :{listOfCandies.TrimEnd(',')}");
-            var UserFlavorSelection = Console.ReadLine();
+                var EatenRandomizeCandies = new List<Candy>();
+                var candies = new List<Candy>();
+                candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, DateTime.Now, 1));
+                candies.Add(new Candy("watchmacallit", "Hersheys", FlavorType.chocolate, DateTime.Now, 2));
+                candies.Add(new Candy("skittles", "Wrigley", FlavorType.sour, DateTime.Now, 3));
+                candies.Add(new Candy("kisses", "Hersheys", FlavorType.chocolate, DateTime.Now, 4));
+                candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, DateTime.Now, 5));
+                candies.Add(new Candy("sour punch", "American Licorice", FlavorType.sour, DateTime.Now, 6));
+                var listOfCandies = "";
+                foreach (var candy in candies)
+                {
+                    listOfCandies += $"{candy.Flavor}" + ",";
+                }
+                Console.WriteLine($"Please select flavor of Candy that you want to eat :{listOfCandies.TrimEnd(',')}");
+                var UserFlavorSelection = Console.ReadLine().ToLower();
 
-            var FilterCandyByFlavor = candies.Where(candy => candy.Flavor.ToString() == UserFlavorSelection).Select(candy=>candy).ToList();
-            Random random = new Random();
-            int randFlavor = random.Next(FilterCandyByFlavor.Count);
-            var randSelectedCandy = FilterCandyByFlavor[randFlavor].Name;
-            var checkSameCandies = FilterCandyByFlavor.Where(candy => candy.Name == randSelectedCandy).First();
-            Console.WriteLine($"{checkSameCandies.Name} with {checkSameCandies.CandyId} id" );
-            candies.Remove(checkSameCandies);
-            EatenRandomizeCandies.Add(checkSameCandies);
-            var listOfReamainingCandies = " ";
-            var listOfEatenCandies = " ";
-            foreach (var candy in EatenRandomizeCandies)
-            {
-                listOfEatenCandies += $"{candy.Name}" + ",";
-            }
-            Console.WriteLine($"Random flavor candy that I can eat: {listOfEatenCandies.TrimEnd(',')}");
+                var FilterCandyByFlavor = candies.Where(candy => candy.Flavor.ToString() == UserFlavorSelection).Select(candy => candy).ToList();
+                Random random = new Random();
+                int randFlavor = random.Next(FilterCandyByFlavor.Count);
+                var randSelectedCandy = FilterCandyByFlavor[randFlavor].Name;
+                var checkSameCandies = FilterCandyByFlavor.Where(candy => candy.Name == randSelectedCandy).First();
+                Console.WriteLine($"Here is the random candy {checkSameCandies.Name} with {checkSameCandies.CandyId} id");
+                candies.Remove(checkSameCandies);
+                EatenRandomizeCandies.Add(checkSameCandies);
+                var listOfReamainingCandies = " ";
+                var listOfEatenCandies = " ";
+                foreach (var candy in EatenRandomizeCandies)
+                {
+                    listOfEatenCandies += $"{candy.Name}" + ",";
+                }
+                Console.WriteLine($"Random flavor candy that I can eat: {listOfEatenCandies.TrimEnd(',')}");
 
-            foreach (var candy in candies)
-            {
-                listOfReamainingCandies += $"{candy.Name}" + ",";
+                foreach (var candy in candies)
+                {
+                    listOfReamainingCandies += $"{candy.Name}" + ",";
+                }
+                Console.WriteLine($"List of remaining Candies: {listOfReamainingCandies.TrimEnd(',')}");
             }
-            Console.WriteLine($"List of remaining Candies: {listOfReamainingCandies}");
+            catch (NotImplementedException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
-    }
+}
