@@ -27,12 +27,11 @@ namespace CandyMarket
 
     public enum FlavorType
     {
-        Chocolate,
-        HardCandy,
-        Caramel,
-        Sour,
-        Stretchy,
-        Nut
-
+        chocolate,
+        hardCandy,
+        caramel,
+        sour,
+        stretchy,
+        nut
     }
 }
