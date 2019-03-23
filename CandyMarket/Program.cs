@@ -19,12 +19,14 @@ namespace CandyMarket
             var Bob = new Owner("Owner2", new List<Candy> { myCandy2 });
             var Daphne = new Owner("Owner3", new List<Candy> { myCandy3 });
             var db = SetupNewApp();
+            var candyCounter = new List<int> {1234, 1235, 1236};
+
 
             var exit = false;
             while (!exit)
             {
                 var userInput = MainMenu();
-                exit = TakeActions(db, userInput, MainOwner, EatenCandies);
+                exit = TakeActions(db, userInput, MainOwner, myCandy, myCandy2, myCandy3, candyCounter, EatenCandies);
             }
 
 
@@ -54,7 +56,9 @@ namespace CandyMarket
         internal static ConsoleKeyInfo MainMenu()
         {
             View mainMenu = new View()
-                    .AddMenuOption("Did you just get some new candy? Add it here.")
+                    .AddMenuOption("Did you want to add candyYum? Add it here.")
+                    .AddMenuOption("Did you want to add sweets? Add it here.")
+                    .AddMenuOption("Did you want to add coolCandy? Add it here.")
                     .AddMenuOption("Do you want to eat some candy? Take it here.")
                     .AddMenuOption("Do you want to eat random flavor candy? Take it here.")
                     .AddMenuText("Press Esc to exit.");
@@ -63,7 +67,8 @@ namespace CandyMarket
             return userOption;
         }
 
-        private static bool TakeActions(CandyStorage db, ConsoleKeyInfo userInput, Owner mainOwner, List<Candy> EatenCandies)
+        private static bool TakeActions(CandyStorage db, ConsoleKeyInfo userInput, Owner mainOwner, Candy candyYum, Candy sweets, Candy coolCandy, List<int> candyCounter, List<Candy> EatenCandies)
+
         {
             Console.Write(Environment.NewLine);
 
@@ -74,26 +79,50 @@ namespace CandyMarket
             switch (selection)
             {
                 case "1":
-                    AddNewCandy(db);
+                    AddNewCandy(mainOwner, candyYum, candyCounter);
                     break;
                 case "2":
-                    EatCandy(mainOwner, EatenCandies);
+                    AddNewCandy(mainOwner, sweets, candyCounter);
                     break;
                 case "3":
+                    AddNewCandy(mainOwner, coolCandy, candyCounter);
+                    break;
+                case "4":
+                    EatCandy(mainOwner, EatenCandies);
+                    break;
+                case "5":
                     EatRandomizeCandy(mainOwner, EatenCandies);
                     break;
                 default: return false;
             }
-           Console.ReadLine();
+            Console.ReadLine();
             return false;
         }
 
-        internal static void AddNewCandy(CandyStorage db)
+        public static void AddNewCandy(Owner MainOwner, Candy myCandy, List<int> candyCounter)
         {
+            var dateTime = DateTime.Now;
+            var maxId = 0;
 
+            foreach (var Id in candyCounter)
+            {
+                if (Id > maxId)
+                {
+                    maxId = Id;
+                }
+            }
 
-            //var savedCandy = db.SaveNewCandy(newCandy);
-            // Console.WriteLine($"Now you own the candy {savedCandy.Name}");
+            maxId++;
+            myCandy.RecievedDate = dateTime;
+            myCandy.CandyId = maxId;
+            candyCounter.Add(maxId);
+            MainOwner.CandyList.Add(myCandy);
+            Console.WriteLine($"{myCandy.CandyId}, {myCandy.Name}, {myCandy.RecievedDate}");
+            foreach (var item in MainOwner.CandyList)
+            {
+                Console.WriteLine(item.Name);
+            }
+       
         }
 
         private static void EatCandy(Owner mainOwner, List<Candy> EatenCandies)
