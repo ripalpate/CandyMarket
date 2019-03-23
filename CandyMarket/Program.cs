@@ -8,18 +8,18 @@ namespace CandyMarket
     {
         static void Main(string[] args)
         {
-            var myCandy = new Candy("snickers", "sweetyum", FlavorType.chocolate, DateTime.Now, 1234);
-            var myCandy2 = new Candy("sour patch", "Allen Candy Company", FlavorType.sour, DateTime.Now, 1235);
-            var myCandy3 = new Candy("taffy", "pedigree", FlavorType.stretchy, DateTime.Now, 1236);
-            var myCandy4 = new Candy("jawbreaker", "sweetums", FlavorType.hardCandy, DateTime.Now, 1237);
-            var myCandy5 = new Candy("Milkyway", "hersheys", FlavorType.chocolate, DateTime.Now, 1238);
-            var myCandy6 = new Candy("kisses", "pedigree", FlavorType.chocolate, DateTime.Now, 1239);
+            var myCandy = new Candy("snickers", "sweetyum", FlavorType.chocolate, new DateTime(2019, 01, 15, 13, 00, 23, 430), 1234);
+            var myCandy2 = new Candy("sour patch", "Allen Candy Company", FlavorType.sour, new DateTime(2019, 01, 20, 15, 10, 30, 530), 1235);
+            var myCandy3 = new Candy("taffy", "pedigree", FlavorType.stretchy, new DateTime(2019, 02, 25, 11, 30, 23, 630), 1236);
+            var myCandy4 = new Candy("jawbreaker", "sweetums", FlavorType.hardCandy, new DateTime(2019, 03, 07, 17, 00, 30, 730), 1237);
+            var myCandy5 = new Candy("milkyway", "hersheys", FlavorType.chocolate, new DateTime(2019, 03, 01, 14, 25, 50, 330), 1238);
+            var myCandy6 = new Candy("kisses", "pedigree", FlavorType.chocolate, new DateTime(2019, 02, 28, 18, 20, 23, 730), 1239);
             var EatenCandies = new List<Candy>();
             var MainOwner = new Owner("Owner1", new List<Candy> { myCandy, myCandy2 });
             var Bob = new Owner("Owner2", new List<Candy> { myCandy3, myCandy4 });
             var Daphne = new Owner("Owner3", new List<Candy> { myCandy5,myCandy6 });
             var db = SetupNewApp();
-            var candyCounter = new List<int> {1234, 1235, 1236};
+            var candyCounter = new List<int> {1234, 1235, 1236, 1237, 1238, 1239};
 
             var exit = false;
             while (!exit)
@@ -111,7 +111,6 @@ namespace CandyMarket
         {
             var dateTime = DateTime.Now;
             var maxId = 0;
-
             foreach (var Id in candyCounter)
             {
                 if (Id > maxId)
@@ -121,29 +120,26 @@ namespace CandyMarket
             }
 
             maxId++;
-            myCandy.RecievedDate = dateTime;
-            myCandy.CandyId = maxId;
             candyCounter.Add(maxId);
-            MainOwner.CandyList.Add(myCandy);
-            Console.WriteLine($"{myCandy.CandyId}, {myCandy.Name}, {myCandy.RecievedDate}");
+            var newCandy = new Candy(myCandy.Name, myCandy.Manufacture, myCandy.Flavor, dateTime, maxId);
+            MainOwner.CandyList.Add(newCandy);
+            Console.WriteLine($"You added:{newCandy.Name} candy which is received on {newCandy.RecievedDate} with {newCandy.CandyId} id");
             foreach (var item in MainOwner.CandyList)
             {
                 Console.WriteLine(item.Name);
             }
-       
         }
 
         private static void EatCandy(Owner mainOwner, List<Candy> EatenCandies)
         {
             try
             {
-
                 var listOfCandies = "";
                 foreach (var candy in mainOwner.CandyList)
                 {
                     listOfCandies += $"{candy.Name}" + ",";
                 }
-                Console.WriteLine($"Please Select Which Candy You want to Eat :{listOfCandies.TrimEnd(',')}");
+                Console.WriteLine($"Please select which candy you want to eat :{listOfCandies.TrimEnd(',')}");
                 var UserSelection = Console.ReadLine().ToLower();
 
                 var FiltercandyByName = mainOwner.CandyList.Where(candy => candy.Name == UserSelection).ToList();
@@ -153,18 +149,19 @@ namespace CandyMarket
 
                 mainOwner.CandyList.Remove(OldCandy);
                 EatenCandies.Add(OldCandy);
-                var listOfReamainingCandies = " ";
-                var listOfEatenCandies = " ";
-                foreach (var candy in EatenCandies)
-                {
-                    listOfEatenCandies += $"{candy.Name}" + ",";
-                }
-                Console.WriteLine($"Candy that I ate: {listOfEatenCandies.TrimEnd(',')} ");
-                foreach (var candy in mainOwner.CandyList)
-                {
-                    listOfReamainingCandies += $"{candy.Name}" + ",";
-                }
-                Console.WriteLine($"Remaining list of candies after I ate: {listOfReamainingCandies.TrimEnd(',')}");
+                PrintCandies(mainOwner, EatenCandies);
+                //var listOfReamainingCandies = " ";
+                //var listOfEatenCandies = " ";
+                //foreach (var candy in EatenCandies)
+                //{
+                //    listOfEatenCandies += $"{candy.Name}" + ",";
+                //}
+                //Console.WriteLine($"Candy that I ate: {listOfEatenCandies.TrimEnd(',')} ");
+                //foreach (var candy in mainOwner.CandyList)
+                //{
+                //    listOfReamainingCandies += $"{candy.Name}" + ",";
+                //}
+                //Console.WriteLine($"Remaining list of candies after I ate: {listOfReamainingCandies.TrimEnd(',')}");
             }
             catch (NotImplementedException e)
             {
@@ -233,19 +230,20 @@ namespace CandyMarket
                 Console.WriteLine($"Here is the random candy {checkSameCandies.Name} which is received on {checkSameCandies.RecievedDate}");
                 mainOwner.CandyList.Remove(checkSameCandies);
                 EatenCandies.Add(checkSameCandies);
-                var listOfReamainingCandies = " ";
-                var listOfEatenCandies = " ";
-                foreach (var candy in EatenCandies)
-                {
-                    listOfEatenCandies += $"{candy.Name}" + ",";
-                }
-                Console.WriteLine($"Random flavor candy that I can eat: {listOfEatenCandies.TrimEnd(',')}");
+                PrintCandies(mainOwner, EatenCandies);
+                //var listOfReamainingCandies = " ";
+                //var listOfEatenCandies = " ";
+                //foreach (var candy in EatenCandies)
+                //{
+                //    listOfEatenCandies += $"{candy.Name}" + ",";
+                //}
+                //Console.WriteLine($"Random flavor candy that I can eat: {listOfEatenCandies.TrimEnd(',')}");
 
-                foreach (var candy in mainOwner.CandyList)
-                {
-                    listOfReamainingCandies += $"{candy.Name}" + ",";
-                }
-                Console.WriteLine($"List of remaining Candies: {listOfReamainingCandies.TrimEnd(',')}");
+                //foreach (var candy in mainOwner.CandyList)
+                //{
+                //    listOfReamainingCandies += $"{candy.Name}" + ",";
+                //}
+                //Console.WriteLine($"List of remaining Candies: {listOfReamainingCandies.TrimEnd(',')}");
             }
             catch (NotImplementedException e)
             {
@@ -253,5 +251,24 @@ namespace CandyMarket
                 throw;
             }
         }
+
+        public static bool PrintCandies(Owner mainOwner, List<Candy> EatenCandies)
+        {
+            var listOfReamainingCandies = " ";
+            var listOfEatenCandies = " ";
+            foreach (var candy in EatenCandies)
+            {
+                listOfEatenCandies += $"{candy.Name}" + ",";
+            }
+            Console.WriteLine($"Candy that ate: {listOfEatenCandies.TrimEnd(',')}");
+
+            foreach (var candy in mainOwner.CandyList)
+            {
+                listOfReamainingCandies += $"{candy.Name}" + ",";
+            }
+            Console.WriteLine($"List of remaining Candies: {listOfReamainingCandies.TrimEnd(',')}");
+            return true;
+        }
+       
     }
 }
