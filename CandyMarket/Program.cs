@@ -8,16 +8,16 @@ namespace CandyMarket
     {
         static void Main(string[] args)
         {
-            var myCandy = new Candy("candy yum", "sweetums", FlavorType.hardCandy, DateTime.Now, 1234);
-            var myCandy2 = new Candy("sweets", "mars", FlavorType.sour, DateTime.Now, 1235);
-            var myCandy3 = new Candy("cool candy", "pedigree", FlavorType.stretchy, DateTime.Now, 1236);
-            var myCandy4 = new Candy("candy yum", "sweetums", FlavorType.hardCandy, new DateTime(2019, 01, 15, 12, 00, 23, 430), 1237);
-            var myCandy5 = new Candy("snickers", "hersheys", FlavorType.chocolate, DateTime.Now, 1238);
-            var myCandy6 = new Candy("kisses", "pedigree", FlavorType.chocolate, new DateTime(2018, 09, 15, 12, 00, 23, 430), 1239);
+            var myCandy = new Candy("snickers", "sweetyum", FlavorType.chocolate, DateTime.Now, 1234);
+            var myCandy2 = new Candy("sour patch", "Allen Candy Company", FlavorType.sour, DateTime.Now, 1235);
+            var myCandy3 = new Candy("taffy", "pedigree", FlavorType.stretchy, DateTime.Now, 1236);
+            var myCandy4 = new Candy("jawbreaker", "sweetums", FlavorType.hardCandy, DateTime.Now, 1237);
+            var myCandy5 = new Candy("Milkyway", "hersheys", FlavorType.chocolate, DateTime.Now, 1238);
+            var myCandy6 = new Candy("kisses", "pedigree", FlavorType.chocolate, DateTime.Now, 1239);
             var EatenCandies = new List<Candy>();
-            var MainOwner = new Owner("Owner1", new List<Candy> { myCandy, myCandy2, myCandy3, myCandy4, myCandy5, myCandy6 });
-            var Bob = new Owner("Owner2", new List<Candy> { myCandy2 });
-            var Daphne = new Owner("Owner3", new List<Candy> { myCandy3 });
+            var MainOwner = new Owner("Owner1", new List<Candy> { myCandy, myCandy2 });
+            var Bob = new Owner("Owner2", new List<Candy> { myCandy3, myCandy4 });
+            var Daphne = new Owner("Owner3", new List<Candy> { myCandy5,myCandy6 });
             var db = SetupNewApp();
             var candyCounter = new List<int> {1234, 1235, 1236};
 
