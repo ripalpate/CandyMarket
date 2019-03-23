@@ -20,12 +20,13 @@ namespace CandyMarket
             var Daphne = new Owner("Owner3", new List<Candy> { myCandy5,myCandy6 });
             var db = SetupNewApp();
             var candyCounter = new List<int> {1234, 1235, 1236};
+            var candyList = new List<Candy> {myCandy, myCandy2, myCandy3, myCandy4, myCandy5, myCandy6};
 
             var exit = false;
             while (!exit)
             {
                 var userInput = MainMenu();
-                exit = TakeActions(userInput, MainOwner, myCandy, myCandy2, myCandy3, candyCounter, EatenCandies, Bob, Daphne);
+                exit = TakeActions(userInput, MainOwner, candyList, candyCounter, EatenCandies, Bob, Daphne);
             }
         }
 
@@ -45,9 +46,7 @@ namespace CandyMarket
         internal static ConsoleKeyInfo MainMenu()
         {
             View mainMenu = new View()
-                    .AddMenuOption("Did you want to add candyYum? Add it here.")
-                    .AddMenuOption("Did you want to add sweets? Add it here.")
-                    .AddMenuOption("Did you want to add coolCandy? Add it here.")
+                    .AddMenuOption("Did you want to add some candy? Get some here.")
                     .AddMenuOption("Do you want to eat some candy? Take it here.")
                     .AddMenuOption("Do you want to eat random flavor candy? Take it here.")
                     .AddMenuOption("Do you want to trade candy? Trade here.")   
@@ -57,7 +56,7 @@ namespace CandyMarket
             return userOption;
         }
   
-        private static bool TakeActions(ConsoleKeyInfo userInput, Owner mainOwner, Candy candyYum, Candy sweets, Candy coolCandy, List<int> candyCounter, List<Candy> EatenCandies,  Owner Bob, Owner Daphne)
+        private static bool TakeActions(ConsoleKeyInfo userInput, Owner mainOwner, List<Candy> candyList, List<int> candyCounter, List<Candy> EatenCandies,  Owner Bob, Owner Daphne)
         {
             Console.Write(Environment.NewLine);
 
@@ -68,21 +67,19 @@ namespace CandyMarket
             switch (selection)
             {
                 case "1":
-                    AddNewCandy(mainOwner, candyYum, candyCounter);
+                    Console.WriteLine("What candy do you want to add? Choose from snickers, sour patch, taffy, jawbreaker, milkyway, kisses");
+                    var candyPicked = Console.ReadLine();
+
+                    var candyFilter = candyList.Where(candy => candy.Name == candyPicked).ToList().First();
+                    AddNewCandy(mainOwner, candyFilter, candyCounter);
                     break;
                 case "2":
-                    AddNewCandy(mainOwner, sweets, candyCounter);
-                    break;
-                case "3":
-                    AddNewCandy(mainOwner, coolCandy, candyCounter);
-                    break;
-                case "4":
                     EatCandy(mainOwner, EatenCandies);
                     break;
-                case "5":
+                case "3":
                     EatRandomizeCandy(mainOwner, EatenCandies);
                     break;
-                case "6":
+                case "4":
                     Console.WriteLine("Who do you want to Trade with?");
                     var tradingOwnerName = Console.ReadLine();
                     var tradingOwner = new Owner("default", new List<Candy>());
