@@ -13,10 +13,13 @@ namespace CandyMarket
             var myCandy = new Candy("candyYum", "sweetums", FlavorType.HardCandy, DateTime.Now, 1234);
             var myCandy2 = new Candy("sweets", "mars", FlavorType.Sour, DateTime.Now, 1235);
             var myCandy3 = new Candy("coolCandy", "pedigree", FlavorType.Stretchy, DateTime.Now, 1236);
+            var myCandy4 = new Candy("coolCandy", "sweetums", FlavorType.HardCandy, DateTime.Now, 1234);
+            var myCandy5 = new Candy("sweets", "mars", FlavorType.Sour, DateTime.Now, 1235);
+            var myCandy6 = new Candy("candyYum", "pedigree", FlavorType.Stretchy, DateTime.Now, 1236);
 
-            var MainOwner = new Owner("Owner1", new List<Candy> { myCandy });
-            var Bob = new Owner("Owner2", new List<Candy> { myCandy2 });
-            var Daphne = new Owner("Owner3", new List<Candy> { myCandy3 });
+            var MainOwner = new Owner("Owner1", new List<Candy> { myCandy, myCandy4 });
+            var Bob = new Owner("Owner2", new List<Candy> { myCandy2, myCandy5 });
+            var Daphne = new Owner("Owner3", new List<Candy> { myCandy3, myCandy6 });
             //var myTrade = new Trade("Trade1", 1234, 1235, "Owner2");
 
             var exit = false;
@@ -57,7 +60,7 @@ namespace CandyMarket
         internal static ConsoleKeyInfo MainMenu()
         {
             View mainMenu = new View()
-                    .AddMenuOption("Did you just get some new candy? Add it here.")
+                    .AddMenuOption("Do you want to add CandyYum?")
                     .AddMenuOption("Do you want to eat some candy? Take it here.")
                     .AddMenuOption("Do you want to trade candy? Trade here.")    
                     .AddMenuText("Press Esc to exit.");
@@ -99,10 +102,10 @@ namespace CandyMarket
                         Console.WriteLine("There is no user by that name.");
                     }
                     break;
-                default: return true;
+                default: return false;
             }
             Console.ReadLine();
-            return true;
+            return false;
         }
 
         internal static void AddNewCandy(CandyStorage db)
