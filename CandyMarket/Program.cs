@@ -150,18 +150,6 @@ namespace CandyMarket
                 mainOwner.CandyList.Remove(OldCandy);
                 EatenCandies.Add(OldCandy);
                 PrintCandies(mainOwner, EatenCandies);
-                //var listOfReamainingCandies = " ";
-                //var listOfEatenCandies = " ";
-                //foreach (var candy in EatenCandies)
-                //{
-                //    listOfEatenCandies += $"{candy.Name}" + ",";
-                //}
-                //Console.WriteLine($"Candy that I ate: {listOfEatenCandies.TrimEnd(',')} ");
-                //foreach (var candy in mainOwner.CandyList)
-                //{
-                //    listOfReamainingCandies += $"{candy.Name}" + ",";
-                //}
-                //Console.WriteLine($"Remaining list of candies after I ate: {listOfReamainingCandies.TrimEnd(',')}");
             }
             catch (NotImplementedException e)
             {
@@ -231,19 +219,6 @@ namespace CandyMarket
                 mainOwner.CandyList.Remove(checkSameCandies);
                 EatenCandies.Add(checkSameCandies);
                 PrintCandies(mainOwner, EatenCandies);
-                //var listOfReamainingCandies = " ";
-                //var listOfEatenCandies = " ";
-                //foreach (var candy in EatenCandies)
-                //{
-                //    listOfEatenCandies += $"{candy.Name}" + ",";
-                //}
-                //Console.WriteLine($"Random flavor candy that I can eat: {listOfEatenCandies.TrimEnd(',')}");
-
-                //foreach (var candy in mainOwner.CandyList)
-                //{
-                //    listOfReamainingCandies += $"{candy.Name}" + ",";
-                //}
-                //Console.WriteLine($"List of remaining Candies: {listOfReamainingCandies.TrimEnd(',')}");
             }
             catch (NotImplementedException e)
             {
@@ -251,7 +226,6 @@ namespace CandyMarket
                 throw;
             }
         }
-
         public static bool PrintCandies(Owner mainOwner, List<Candy> EatenCandies)
         {
             var listOfReamainingCandies = " ";
