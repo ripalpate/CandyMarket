@@ -21,24 +21,12 @@ namespace CandyMarket
             var db = SetupNewApp();
             var candyCounter = new List<int> {1234, 1235, 1236};
 
-
             var exit = false;
             while (!exit)
             {
                 var userInput = MainMenu();
-                exit = TakeActions(db, userInput, MainOwner, myCandy, myCandy2, myCandy3, candyCounter, EatenCandies);
+                exit = TakeActions(userInput, MainOwner, myCandy, myCandy2, myCandy3, candyCounter, EatenCandies, Bob, Daphne);
             }
-
-
-            foreach (var candy in MainOwner.CandyList)
-            {
-                Console.WriteLine($"{ MainOwner.OwnerId} has {candy.Name} " +
-                    $"that has flavor of {candy.Flavor} that was Manufactured " +
-                    $"at {candy.Manufacture} and received on {candy.RecievedDate}");
-            }
-
-            //  Console.ReadLine();
-
         }
 
 
@@ -53,6 +41,7 @@ namespace CandyMarket
             return db;
         }
 
+
         internal static ConsoleKeyInfo MainMenu()
         {
             View mainMenu = new View()
@@ -61,14 +50,14 @@ namespace CandyMarket
                     .AddMenuOption("Did you want to add coolCandy? Add it here.")
                     .AddMenuOption("Do you want to eat some candy? Take it here.")
                     .AddMenuOption("Do you want to eat random flavor candy? Take it here.")
+                    .AddMenuOption("Do you want to trade candy? Trade here.")   
                     .AddMenuText("Press Esc to exit.");
             Console.Write(mainMenu.GetFullMenu());
             var userOption = Console.ReadKey();
             return userOption;
         }
-
-        private static bool TakeActions(CandyStorage db, ConsoleKeyInfo userInput, Owner mainOwner, Candy candyYum, Candy sweets, Candy coolCandy, List<int> candyCounter, List<Candy> EatenCandies)
-
+  
+        private static bool TakeActions(ConsoleKeyInfo userInput, Owner mainOwner, Candy candyYum, Candy sweets, Candy coolCandy, List<int> candyCounter, List<Candy> EatenCandies,  Owner Bob, Owner Daphne)
         {
             Console.Write(Environment.NewLine);
 
@@ -92,6 +81,25 @@ namespace CandyMarket
                     break;
                 case "5":
                     EatRandomizeCandy(mainOwner, EatenCandies);
+                    break;
+                case "6":
+                    Console.WriteLine("Who do you want to Trade with?");
+                    var tradingOwnerName = Console.ReadLine();
+                    var tradingOwner = new Owner("default", new List<Candy>());
+                    if (tradingOwnerName.ToUpper() == "BOB")
+                    {
+                        tradingOwner = Bob;
+                        StartTrade(mainOwner, tradingOwner);
+                    }
+                    else if (tradingOwnerName.ToUpper() == "DAPHNE")
+                    {
+                        tradingOwner = Daphne;
+                        StartTrade(mainOwner, tradingOwner);
+                    }
+                    else
+                    {
+                        Console.WriteLine("There is no user by that name.");
+                    }
                     break;
                 default: return false;
             }
@@ -129,12 +137,6 @@ namespace CandyMarket
         {
             try
             {
-                //var EatenCandies = new List<Candy>();
-                //var candies = new List<Candy>();
-                //candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, new DateTime(2016, 08, 01, 18, 50, 23, 230), 1));
-                //candies.Add(new Candy("watchmacallit", "Hersheys", FlavorType.chocolate, DateTime.Now, 2));
-                //candies.Add(new Candy("skittles", "Wrigley", FlavorType.sour, DateTime.Now, 3));
-                //candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, new DateTime(2017, 08, 01, 06, 20, 23, 230), 4));
 
                 var listOfCandies = "";
                 foreach (var candy in mainOwner.CandyList)
@@ -172,17 +174,49 @@ namespace CandyMarket
 
         }
 
+        private static void StartTrade(Owner mainOwner, Owner tradingOwner)
+        {
+            var tradingOwnerCandyList = "";
+            foreach (var candy in tradingOwner.CandyList)
+            {
+                tradingOwnerCandyList += $"{candy.Name},";
+            }
+            Console.WriteLine($"What candy do you want to receive? {tradingOwnerCandyList.TrimEnd(',')}");
+            var receivingCandyInput = Console.ReadLine();
+            var filterCandy = tradingOwner.CandyList.Where(candy => candy.Name == receivingCandyInput).ToList();
+            var receivingCandy = filterCandy.First();
+            var mainOwnerCandyList = "";
+            foreach (var candy in mainOwner.CandyList)
+            {
+                mainOwnerCandyList += $"{candy.Name},";
+            }
+            Console.WriteLine($"What candy do you want to trade? {mainOwnerCandyList.TrimEnd(',')}");
+            var tradingCandyInput = Console.ReadLine();
+            var filterCandies = mainOwner.CandyList.Where(candy => candy.Name == tradingCandyInput).ToList();
+            var tradingCandy = filterCandies.First();
+            mainOwner.CandyList.Remove(tradingCandy);
+            mainOwner.CandyList.Add(receivingCandy);
+            tradingOwner.CandyList.Remove(receivingCandy);
+            tradingOwner.CandyList.Add(tradingCandy);
+            var newTradingOwnerCandyList = "";
+            var newMainOwnerCandyList = "";
+            foreach (var candy in tradingOwner.CandyList)
+            {
+                newTradingOwnerCandyList += $"{candy.Name},";
+            }
+            foreach (var candy in mainOwner.CandyList)
+            {
+                newMainOwnerCandyList += $"{candy.Name},";
+            }
+            Console.WriteLine($"You have traded {tradingCandy.Name} for {receivingCandy.Name}");
+            Console.WriteLine($"You now have these candies: {newMainOwnerCandyList.TrimEnd(',')}");
+            Console.WriteLine($"{tradingOwner.OwnerId} now has these candies: {newTradingOwnerCandyList.TrimEnd(',')}");
+
+        }
+
         public static void EatRandomizeCandy(Owner mainOwner, List<Candy> EatenCandies) {
             try
             {
-                //var EatenRandomizeCandies = new List<Candy>();
-                //var candies = new List<Candy>();
-                //candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, new DateTime(2018, 08, 01, 18, 50, 23, 230), 1));
-                //candies.Add(new Candy("watchmacallit", "Hersheys", FlavorType.chocolate, DateTime.Now, 2));
-                //candies.Add(new Candy("skittles", "Wrigley", FlavorType.sour, DateTime.Now, 3));
-                //candies.Add(new Candy("kisses", "Hersheys", FlavorType.chocolate, new DateTime(2018, 09, 15, 12, 00, 23, 430), 4));
-                //candies.Add(new Candy("snickers", "Hersheys", FlavorType.chocolate, new DateTime(2018, 10, 20, 11, 50, 20, 530), 5));
-                //candies.Add(new Candy("sour punch", "American Licorice", FlavorType.sour, new DateTime(2019, 01, 05, 13, 25, 23, 330), 6));
                 var listOfCandies = "";
                 foreach (var candy in mainOwner.CandyList)
                 {
