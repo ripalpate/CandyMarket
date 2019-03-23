@@ -12,12 +12,13 @@ namespace CandyMarket
             var myCandy2 = new Candy("sour patch", "Allen Candy Company", FlavorType.sour, DateTime.Now, 1235);
             var myCandy3 = new Candy("taffy", "pedigree", FlavorType.stretchy, DateTime.Now, 1236);
             var myCandy4 = new Candy("jawbreaker", "sweetums", FlavorType.hardCandy, DateTime.Now, 1237);
-            var myCandy5 = new Candy("Milkyway", "hersheys", FlavorType.chocolate, DateTime.Now, 1238);
+            var myCandy5 = new Candy("milkyway", "hersheys", FlavorType.chocolate, DateTime.Now, 1238);
             var myCandy6 = new Candy("kisses", "pedigree", FlavorType.chocolate, DateTime.Now, 1239);
             var EatenCandies = new List<Candy>();
             var MainOwner = new Owner("Owner1", new List<Candy> { myCandy, myCandy2 });
-            var Bob = new Owner("Owner2", new List<Candy> { myCandy3, myCandy4 });
-            var Daphne = new Owner("Owner3", new List<Candy> { myCandy5,myCandy6 });
+            var Bob = new Owner("Bob", new List<Candy> { myCandy3, myCandy4 });
+            var Daphne = new Owner("Daphne", new List<Candy> { myCandy5,myCandy6 });
+            var OwnerList = new List<Owner> { MainOwner, Bob, Daphne };
             var db = SetupNewApp();
             var candyCounter = new List<int> {1234, 1235, 1236};
 
@@ -25,7 +26,7 @@ namespace CandyMarket
             while (!exit)
             {
                 var userInput = MainMenu();
-                exit = TakeActions(userInput, MainOwner, myCandy, myCandy2, myCandy3, candyCounter, EatenCandies, Bob, Daphne);
+                exit = TakeActions(userInput, OwnerList, myCandy, myCandy2, myCandy3, candyCounter, EatenCandies);
             }
         }
 
@@ -57,13 +58,13 @@ namespace CandyMarket
             return userOption;
         }
   
-        private static bool TakeActions(ConsoleKeyInfo userInput, Owner mainOwner, Candy candyYum, Candy sweets, Candy coolCandy, List<int> candyCounter, List<Candy> EatenCandies,  Owner Bob, Owner Daphne)
+        private static bool TakeActions(ConsoleKeyInfo userInput, List<Owner> OwnerList, Candy candyYum, Candy sweets, Candy coolCandy, List<int> candyCounter, List<Candy> EatenCandies)
         {
             Console.Write(Environment.NewLine);
 
             if (userInput.Key == ConsoleKey.Escape)
                 return true;
-
+            var mainOwner = OwnerList.Where(owner => owner.OwnerId == "Owner1").ToList().First();
             var selection = userInput.KeyChar.ToString();
             switch (selection)
             {
@@ -83,17 +84,17 @@ namespace CandyMarket
                     EatRandomizeCandy(mainOwner, EatenCandies);
                     break;
                 case "6":
-                    Console.WriteLine("Who do you want to Trade with?");
+                    Console.WriteLine("Who do you want to Trade with? Bob, Daphne");
                     var tradingOwnerName = Console.ReadLine();
                     var tradingOwner = new Owner("default", new List<Candy>());
                     if (tradingOwnerName.ToUpper() == "BOB")
-                    {
-                        tradingOwner = Bob;
+                    { 
+                        tradingOwner = OwnerList.Where(owner => owner.OwnerId == "Bob").ToList().First();
                         StartTrade(mainOwner, tradingOwner);
                     }
                     else if (tradingOwnerName.ToUpper() == "DAPHNE")
                     {
-                        tradingOwner = Daphne;
+                        tradingOwner = OwnerList.Where(owner => owner.OwnerId == "Daphne").ToList().First();
                         StartTrade(mainOwner, tradingOwner);
                     }
                     else
