@@ -8,21 +8,13 @@ namespace CandyMarket
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
-            var myCandy = new Candy("snickers", "sweetyum", FlavorType.chocolate, DateTime.Now, 1234);
-            var myCandy2 = new Candy("sour patch", "Allen Candy Company", FlavorType.sour, DateTime.Now, 1235);
-            var myCandy3 = new Candy("taffy", "pedigree", FlavorType.stretchy, DateTime.Now, 1236);
-            var myCandy4 = new Candy("jawbreaker", "sweetums", FlavorType.hardCandy, DateTime.Now, 1237);
-            var myCandy5 = new Candy("milkyway", "hersheys", FlavorType.chocolate, DateTime.Now, 1238);
-            var myCandy6 = new Candy("kisses", "pedigree", FlavorType.chocolate, DateTime.Now, 1239);
-=======
             var myCandy = new Candy("snickers", "sweetyum", FlavorType.chocolate, new DateTime(2019, 01, 15, 13, 00, 23, 430), 1234);
             var myCandy2 = new Candy("sour patch", "Allen Candy Company", FlavorType.sour, new DateTime(2019, 01, 20, 15, 10, 30, 530), 1235);
             var myCandy3 = new Candy("taffy", "pedigree", FlavorType.stretchy, new DateTime(2019, 02, 25, 11, 30, 23, 630), 1236);
             var myCandy4 = new Candy("jawbreaker", "sweetums", FlavorType.hardCandy, new DateTime(2019, 03, 07, 17, 00, 30, 730), 1237);
             var myCandy5 = new Candy("milkyway", "hersheys", FlavorType.chocolate, new DateTime(2019, 03, 01, 14, 25, 50, 330), 1238);
             var myCandy6 = new Candy("kisses", "pedigree", FlavorType.chocolate, new DateTime(2019, 02, 28, 18, 20, 23, 730), 1239);
->>>>>>> master
+
             var EatenCandies = new List<Candy>();
             var MainOwner = new Owner("Owner1", new List<Candy> { myCandy, myCandy2 });
             var Bob = new Owner("Bob", new List<Candy> { myCandy3, myCandy4 });
@@ -36,11 +28,7 @@ namespace CandyMarket
             while (!exit)
             {
                 var userInput = MainMenu();
-<<<<<<< HEAD
-                exit = TakeActions(userInput, OwnerList, myCandy, myCandy2, myCandy3, candyCounter, EatenCandies);
-=======
-                exit = TakeActions(userInput, MainOwner, candyList, candyCounter, EatenCandies, Bob, Daphne);
->>>>>>> master
+                exit = TakeActions(userInput, OwnerList, candyList, candyCounter, EatenCandies);
             }
         }
 
@@ -69,12 +57,8 @@ namespace CandyMarket
             var userOption = Console.ReadKey();
             return userOption;
         }
-  
-<<<<<<< HEAD
-        private static bool TakeActions(ConsoleKeyInfo userInput, List<Owner> OwnerList, Candy candyYum, Candy sweets, Candy coolCandy, List<int> candyCounter, List<Candy> EatenCandies)
-=======
-        private static bool TakeActions(ConsoleKeyInfo userInput, Owner mainOwner, List<Candy> candyList, List<int> candyCounter, List<Candy> EatenCandies,  Owner Bob, Owner Daphne)
->>>>>>> master
+
+        private static bool TakeActions(ConsoleKeyInfo userInput, List<Owner> OwnerList, List<Candy> candyList, List<int> candyCounter, List<Candy> EatenCandies)
         {
             Console.Write(Environment.NewLine);
 
@@ -97,13 +81,9 @@ namespace CandyMarket
                 case "3":
                     EatRandomizeCandy(mainOwner, EatenCandies);
                     break;
-<<<<<<< HEAD
-                case "6":
-                    Console.WriteLine("Who do you want to Trade with? Bob, Daphne");
-=======
                 case "4":
-                    Console.WriteLine("Who do you want to Trade with?");
->>>>>>> master
+                    Console.WriteLine("Who do you want to Trade with? Bob, Daphne");
+
                     var tradingOwnerName = Console.ReadLine();
                     var tradingOwner = new Owner("default", new List<Candy>());
                     if (tradingOwnerName.ToUpper() == "BOB")
