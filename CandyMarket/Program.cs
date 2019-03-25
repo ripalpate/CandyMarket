@@ -39,8 +39,8 @@ namespace CandyMarket
         internal static CandyStorage SetupNewApp()
         {
             Console.Title = "Cross Confectioneries Incorporated";
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+            Console.ForegroundColor = ConsoleColor.White;
 
             var db = new CandyStorage();
 
@@ -127,6 +127,7 @@ namespace CandyMarket
         {
             try
             {
+                //iterates over candies list to display candy options for user
                 var listOfCandies = "";
                 foreach (var candy in mainOwner.CandyList)
                 {
@@ -135,11 +136,13 @@ namespace CandyMarket
                 Console.WriteLine($"Please select which candy you want to eat :{listOfCandies.TrimEnd(',')}");
                 var UserSelection = Console.ReadLine().ToLower();
 
+                //filters the candy by name to match same name candy and sort it by old date
                 var FiltercandyByName = mainOwner.CandyList.Where(candy => candy.Name == UserSelection).ToList();
                 FiltercandyByName.Sort((x, y) => (x.RecievedDate.CompareTo(y.RecievedDate)));
                 var OldCandy = FiltercandyByName.First();
                 Console.WriteLine($"You can eat {OldCandy.Name} which is received on {OldCandy.RecievedDate}");
 
+                //removes eaten candy from the candies list and adds to eatenCandies list
                 mainOwner.CandyList.Remove(OldCandy);
                 EatenCandies.Add(OldCandy);
                 PrintCandies(mainOwner, EatenCandies);
@@ -232,6 +235,7 @@ namespace CandyMarket
         {
             try
             {
+                //iterates over candies list to display candy falvor to users.
                 var listOfCandies = "";
                 foreach (var candy in mainOwner.CandyList)
                 {
@@ -240,12 +244,17 @@ namespace CandyMarket
                 Console.WriteLine($"Please select flavor of Candy that you want to eat :{listOfCandies.TrimEnd(',')}");
                 var UserFlavorSelection = Console.ReadLine().ToLower();
 
+                //filters candy by flavor and selects that candy
                 var FilterCandyByFlavor = mainOwner.CandyList.Where(candy => candy.Flavor.ToString() == UserFlavorSelection).Select(candy => candy).ToList();
+
+                // randomize candy by flavor and filters the candy by name to see if similar candies exists in the list and finds old candy
                 Random random = new Random();
                 int randFlavor = random.Next(FilterCandyByFlavor.Count);
                 var randSelectedCandy = FilterCandyByFlavor[randFlavor].Name;
                 var checkSameCandies = FilterCandyByFlavor.Where(candy => candy.Name == randSelectedCandy).First();
                 Console.WriteLine($"Here is the random candy {checkSameCandies.Name} which is received on {checkSameCandies.RecievedDate}");
+
+                //Removes eaaten candy from the candies list and adds that candy to EatenCandies list.
                 mainOwner.CandyList.Remove(checkSameCandies);
                 EatenCandies.Add(checkSameCandies);
                 PrintCandies(mainOwner, EatenCandies);
@@ -258,6 +267,7 @@ namespace CandyMarket
         }
         public static bool PrintCandies(Owner mainOwner, List<Candy> EatenCandies)
         {
+            //iterates over EatenCandies List to print individual candy
             var listOfReamainingCandies = " ";
             var listOfEatenCandies = " ";
             foreach (var candy in EatenCandies)
@@ -266,6 +276,7 @@ namespace CandyMarket
             }
             Console.WriteLine($"Candy that ate: {listOfEatenCandies.TrimEnd(',')}");
 
+            //iterates over candies list to display remaining candies in the candies list.
             foreach (var candy in mainOwner.CandyList)
             {
                 listOfReamainingCandies += $"{candy.Name}" + ",";
